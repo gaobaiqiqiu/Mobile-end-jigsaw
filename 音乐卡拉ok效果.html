@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音乐卡拉ok特效</title>
+<style type="text/css">
+   .audio{
+    height: 22px;
+    width: 100px;
+    border: 2px solid #ccc;
+   }
+   /*.text{
+       position: relative;
+       top: 8px;
+       display: -webkit-box;
+       -webkit-box-orient: horizontal;
+       -webkit-box-align: center;
+       font: normal normal bold 60px 微软雅黑,sans-serif;
+       -webkit-filter: brightness(2);
+   }
+   .text p{
+    float: left;
+    margin-left: 10px;
+    font-size: 22px;
+    color: green;
+   }*/
+   .text{
+       position:relative;
+       top:8px;
+       display:-webkit-box;
+       -webkit-box-orient:horizontal;
+       -webkit-box-align:center;font:normal normal bold 12px 微软雅黑,sans-serif;-webkit-filter:brightness(2);
+   }
+   .text p{
+       background:-webkit-linear-gradient(top, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%), -webkit-linear-gradient(left, #f00 0%, #00f 0%);
+       -webkit-background-clip:text;
+       -webkit-text-fill-color:transparent;
+       /*-webkit-text-stroke:1px #f00;*/
+       -webkit-filter:drop-shadow(0px 0px 1px #f00);
+   }
+</style>
+</head>
+<body>
+<p class="audio">点击播放音乐</p>
+<!-- <p></p> -->
+<div class="text" id="text"></div>
+<div class="cont"></div>
+<audio src="audio.mp3" autoplay></audio>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript">
+/*var arr = [
+    {'ws':['<0,254,0>夏<254,508,0>朝<762,355,0>是<1117,302,0>中<1419,357,0>国<1776,254,0>史<2030,204,0>书<2234,352,0>中<2586,205,0>记<2791,151,0>载<2942,201,0>的<3143,252,0>第<3395,202,0>一<3597,305,0>个<3902,307,0>世<4209,206,0>袭<4415,303,0>制<4718,201,0>朝<4919,306,0>代<5225,658,0>。']},
+    {'wsc':[786,5883]},
+    {'cont':'夏朝是中国史书中记载的第一个世袭制朝代。'}
+];
+var line = [{'ws':[{'w':'','o':'','d':''}]}];
+var cont = document.querySelector('.cont');
+for(var k=0;k<arr.length;k++){
+    console.log(arr[0]['ws'][0])
+    cont.innerHTML = arr[2]['cont']
+}*/
+
+//[786,5883]<0,254,0>夏<254,508,0>朝<762,355,0>是<1117,302,0>中<1419,357,0>国<1776,254,0>史<2030,204,0>书<2234,352,0>中<2586,205,0>记<2791,151,0>载<2942,201,0>的<3143,252,0>第<3395,202,0>一<3597,305,0>个<3902,307,0>世<4209,206,0>袭<4415,303,0>制<4718,201,0>朝<4919,306,0>代<5225,658,0>。
+
+var arr = ["夏朝是中国史书中记载的第一个世袭制朝代。","[786,5883]<0,254,0>夏<254,508,0>朝<762,355,0>是<1117,302,0>中<1419,357,0>国<1776,254,0>史<2030,204,0>书<2234,352,0>中<2586,205,0>记<2791,151,0>载<2942,201,0>的<3143,252,0>第<3395,202,0>一<3597,305,0>个<3902,307,0>世<4209,206,0>袭<4415,303,0>制<4718,201,0>朝<4919,306,0>代<5225,658,0>。"]
+console.log(arr)
+var lines = [];
+lines[0] = {};
+//var str = "[786,5883]<0,254,0>夏<254,508,0>朝<762,355,0>是<1117,302,0>中<1419,357,0>国<1776,254,0>史<2030,204,0>书<2234,352,0>中<2586,205,0>记<2791,151,0>载<2942,201,0>的<3143,252,0>第<3395,202,0>一<3597,305,0>个<3902,307,0>世<4209,206,0>袭<4415,303,0>制<4718,201,0>朝<4919,306,0>代<5225,658,0>。";
+var str = arr[1];
+var regex = /^\[(\d*),(\d*)\]/;
+var result = regex.exec(str);
+var o = result[1];
+var d = result[2];
+var matchResult = str.match(/<\d*,\d*,\d*>[^<]*/g);
+lines[0] = {};
+lines[0]["ws"] = [];
+lines[0]["o"] = o;
+lines[0]["d"] = d;
+for( var i = 0; i < matchResult.length; ++i ) {
+    var item = { };
+    var temp = /<(\d*),(\d*),(\d*)>([^<]*)/.exec(matchResult[i]);
+    item["w"] = temp[4];
+    item["o"] = temp[1];
+    item["d"] = temp[2];
+    lines[0]["ws"].push(item);
+}
+console.log(lines[0]['ws']);
+var pObj = lines[0]['ws'];
+var pOb = '';
+for(var j=0;j<pObj.length;j++){
+    console.log(pObj[j]['w']);
+    pOb += "<p>" + pObj[j]['w'] + "</p>";
+}
+var _etext = document.getElementById("text");
+_etext.innerHTML = pOb;
+// var lines = [
+//             {'ws':[{'w':'作','o':0,'d':456},{'w':'词','o':456,'d':450},{'w':'：','o':906,'d':451},{'w':'周','o':1357,'d':400},{'w':'耀','o':1757,'d':501},{'w':'辉','o':2258,'d':449}],'o':4137, 'd':2700},
+//             {'ws':[{'w':'作','o':0,'d':451},{'w':'曲','o':451,'d':502},{'w':'：','o':953,'d':451},{'w':'李','o':1404,'d':450},{'w':'荣','o':1854,'d':450},{'w':'浩','o':2304,'d':21838}],'o':6844, 'd':24142},
+//             {'ws':[{'w':'穿','o':0,'d':249},{'w':'美','o':249,'d':250},{'w':'丽','o':499,'d':199},{'w':'的','o':698,'d':251},{'w':'服','o':949,'d':251},{'w':'装','o':1200,'d':400}],'o':30986, 'd':1600},
+//             {'ws':[{'w':'为','o':0,'d':249},{'w':'原','o':249,'d':201},{'w':'始','o':450,'d':400},{'w':'的','o':850,'d':250},{'w':'渴','o':1100,'d':200},{'w':'望','o':1300,'d':550},{'w':'而','o':1850,'d':301},{'w':'站','o':2151,'d':251},{'w':'着','o':2402,'d':1305}],'o':32586, 'd':3707},
+//             {'ws':[{'w':'用','o':0,'d':200},{'w':'完','o':200,'d':250},{'w':'美','o':450,'d':200},{'w':'的','o':650,'d':200},{'w':'表','o':850,'d':201},{'w':'情','o':1051,'d':502}],'o':38354, 'd':1553},
+//             {'ws':[{'w':'为','o':0,'d':200},{'w':'脆','o':200,'d':201},{'w':'弱','o':401,'d':250},{'w':'的','o':651,'d':301},{'w':'城','o':952,'d':301},{'w':'市','o':1253,'d':250},{'w':'而','o':1503,'d':504},{'w':'撑','o':2007,'d':501},{'w':'着','o':2508,'d':1356}],'o':39907, 'd':3864}];
+//var offset = 0;
+//var duration = 0;  //持续时间
+// var _etext = document.getElementById("text");
+var wstoes = function(words) {
+    console.log(words);
+    var _eps = _etext.getElementsByTagName("p");
+    console.log(_eps)
+    for (var i = 0; i < words.length; i++) {
+        _eps[i].offset = words[i]['o'];
+        _eps[i].duration = words[i]['d'];
+    }
+    return _eps;
+};
+console.log(wstoes);
+var step = 30; 
+var timer;
+var _processw = function(_eps, _index, _ps, _process, pos, count){
+    _ep = _eps[_index];
+    if (count >= pos) {
+        _process += _ps;
+        _ep.style.backgroundImage = "-webkit-linear-gradient(top, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 100%), -webkit-linear-gradient(left, #ccc " + _process + "%, #00f 0%)";
+        
+        if (_process >= 99) {
+            if ((_index+1) >= _eps.length) { //该句结束退出
+                return;
+            }
+            _index++;
+            var ts = Math.round(_eps[_index].duration/step)==0?1:Math.round(_eps[_index].duration/step);
+            _ps = 100/ts;
+            _process = 0;
+            pos = Math.round(_eps[_index].offset/step);
+        }
+    }
+    count++;
+    timer = setTimeout(_processw.bind(this, _eps, _index, _ps, _process, pos, count), step);
+};
+/*处理单行*/
+var _processL = function(words) {
+    var _eps = wstoes(words);
+    clearTimeout(timer); //清除上一行因为页面渲染延迟没有处理完的定时器
+    _processw(_eps, 0, 100/Math.round(_eps[0].duration/step), 0, Math.round(_eps[0].offset/step), 0);
+};
+/*处理全部krc歌词*/
+var timers = [];
+var _processK = function() {
+    for (var i = 0; i < lines.length; i++) {
+        var timer = setTimeout(_processL.bind(this, lines[i]['ws']), lines[i]['o']);
+        timers.push(timer);
+    }
+};
+
+$('.audio').click(function(){
+    console.log($('.audio'));
+    $('audio')[0].play();
+    //启动处理
+    _processK();
+})
+
+</script>
+
+</body>
+</html>
