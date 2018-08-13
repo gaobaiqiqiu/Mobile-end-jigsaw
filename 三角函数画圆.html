@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三角函数画圆</title>
+<style type="text/css">
+  #box{
+    height: 200px;
+    position: absolute;
+    top: 500px;
+    left: 500px;
+    transform-origin: 0px -100px;
+    transform:rotate( 45deg );
+    background-color: red;
+    /*animation:fillet 7s infinite linear;*/
+  }
+  #im{
+    height: 200px;
+  }
+  /*@keyframes fillet{
+    0%{
+        transform: scale(1,1)
+        opacity: 0.5;
+    }
+    20%{
+        transform: scale(1,1)
+        opacity: 1;
+    }
+    100%{
+        transform: scale(0,0)
+        opacity: 1;
+    }
+  }*/
+</style>
+</head>
+<body>
+
+
+<div id="box"> <img src="1a.png" id="im"></div>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript">
+
+//功能：画实心圆
+//参数：圆心坐标，半径，精确度，背景颜色
+var tmp = 0.0;
+var r = 200.0;  //半径
+var initAngle = 45.0;  //初始化角度也就是圆从哪个点开始
+var interval = setInterval( function(){
+    var cx = 500.0, cy = 500.0;  //圆心坐标(cx,cy)
+    var p = 15.0;  //div的宽高
+    var color = "green";
+    var div = document.createElement("div");
+    div.style.position = "absolute";
+    div.style.left = Math.sin(tmp + initAngle / 180 * Math.PI )*r+cx+"px";
+    div.style.top = Math.cos(tmp  + initAngle / 180 * Math.PI )*r+cy+"px";
+    div.style.width = p+"px";
+    div.style.height = p+"px";
+    div.style.backgroundColor = color;
+    document.body.appendChild(div);
+    tmp += 1.0/(r/p) * 0.1;
+    if( (r -= 0.1) <= 0.0 ){
+      clearInterval( interval );
+    }
+
+},1);
+
+// =============================================================================================
+// 让图片绕圆旋转
+// var angle = 0.0;
+// var scal = 1;
+// setInterval(function(){
+  
+//   if(angle <= 360){
+//     var box = document.getElementById('box');
+//     box.style.transform = "rotate(" + (angle += .1) + "deg ) scale(" + ( 1.0 - angle / 360.0 ) + ")";
+//     var Img = document.getElementById('im');
+//     Img.style.transform = "rotate(" + (-angle) + "deg )";
+//   }
+// }, 1);
+
+
+</script>
+
+</body>
+</html>
